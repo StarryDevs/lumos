@@ -63,14 +63,14 @@ open class SimpleTokenizer(
                 yield(lexResultBegin.token)
                 continue
             } else buffer.position(fallbackPosition)
-            if (character == '/' && buffer.get(buffer.position() + 1) == '*') {
+            if (character == '/' && buffer.getOrNull(buffer.position() + 1) == '*') {
                 lexBlockComment()
                 continue
-            } else if (character.lowercaseChar() == 'i' && buffer.get(buffer.position() + 1) == '"') {
+            } else if (character.lowercaseChar() == 'i' && buffer.getOrNull(buffer.position() + 1) == '"') {
                 buffer.get()
                 val string = lexString()
                 yield(IdentifierToken(raw = string.raw(), parsed = string.getString(), isStringify = true))
-            } else if (character.lowercaseChar() == 'r' && buffer.get(buffer.position() + 1) == '"') {
+            } else if (character.lowercaseChar() == 'r' && buffer.getOrNull(buffer.position() + 1) == '"') {
                 buffer.get()
                 val raw = lexString().raw()
                 yield(StringToken(raw = objectMapper.writeValueAsString(raw), parsed = raw))
@@ -84,7 +84,7 @@ open class SimpleTokenizer(
                 else throw makeError("Invalid syntax")
             }
         }
-    }
+    }.filter { it != EmptyToken }
 
     open fun lexOnceBegin(): LexResult = LexResult.Pass
     open fun lexOnceEnd(): LexResult = LexResult.Pass

@@ -74,7 +74,6 @@ fun Iterable<Token>.processTokens(ctx: Map<String, () -> BigDecimal>): Iterable<
 }
 
 fun main() {
-    //AnsiConsole.systemInstall()
     val ctx = mutableMapOf<String, () -> BigDecimal>()
     while (true) {
         val originalCtx = ctx.toList()

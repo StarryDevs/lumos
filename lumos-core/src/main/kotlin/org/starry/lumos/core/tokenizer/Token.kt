@@ -6,6 +6,10 @@ interface Token {
     fun raw(): String
 }
 
+object EmptyToken : Token {
+    override fun raw() = ""
+}
+
 inline fun <reified T : Token> Token.isToken(raw: String? = null) =
     (raw ?: raw()) == raw() && T::class.isInstance(this)
 
